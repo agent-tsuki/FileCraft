@@ -1,0 +1,38 @@
+# --- Core FastAPI and Server ---
+fastapi==0.111.0              # Web framework for building APIs quickly, async support
+uvicorn[standard]==0.30.1     # ASGI server with auto-reload, websockets, httptools, and more
+
+# --- Environment and Settings ---
+python-dotenv==1.0.1          # Loads environment variables from .env  https://pypi.org/project/python-dotenv/
+pydantic-settings==2.10.1     # Reas environment file  https://docs.pydantic.dev/latest/concepts/pydantic_settings/
+pathlib2                      # not able to find version https://docs.python.org/dev/library/pathlib.html
+
+# --- Database ---
+psycopg2-binary==2.9.10       # PostgreSQL driver for SQLAlchemy or raw usage https://www.psycopg.org/docs/
+SQLAlchemy==2.0.41            # Acess PostgreSQL with orm  https://docs.sqlalchemy.org/en/20/index.html
+alembic==1.16.2               # Create migration for SQL  https://alembic.sqlalchemy.org/en/latest/
+
+# --- File Uploads ---
+python-multipart==0.0.9       # Required for form parsing (file/image upload)
+aiofiles==23.2.1              # Async file handling (needed for FastAPI file uploads)
+
+# --- Background Task / Celery ---
+celery==5.4.0                 # Distributed task queue
+redis==5.0.3                  # Redis client for Celery (broker and backend)
+
+# --- Celery Monitoring ---
+flower==2.0.1                 # Web UI for monitoring Celery workers
+
+# --- Dev Tools ---
+watchdog==4.0.0               # For dev-time hot-reload in Celery workers
+
+# --- Calling external APIs ---
+httpx==0.27.0                 # Async HTTP client
+
+# -- Code linter/formatter---
+ruff==0.12.1                  # Check lint https://pypi.org/project/ruff/
+black==25.1.0                 # Code formatter https://pypi.org/project/black/
+isort==6.0.1                  # Sort import https://pypi.org/project/isort/
+
+# -- testing packages --
+pytest==8.4.1                 # Testing framework https://docs.pytest.org/en/stable/
