@@ -39,6 +39,47 @@
 
 ## 📂 Project Structure
 
+├── app
+│   ├── dependencies.py
+│   ├── helpers
+│   │   ├── constants.py
+│   │   ├── converter.py
+│   │   ├── file_validator.py
+│   │   ├── __init__.py
+|   |
+│   ├── __init__.py
+│   ├── main.py
+│   ├── models
+│   │   └── __init__.py
+|   |
+│   └── router
+│       ├── auth
+│       │   └── __init__.py
+|       |
+│       ├── converters
+│       │   ├── base64.py
+│       │   ├── compression.py
+│       │   ├── images.py
+│       │   ├── __init__.py
+|       |
+│       ├── decoder
+│       │   └── __init__.py
+│       ├── __init__.py
+|
+├── config
+│   ├── database.py
+│   ├── __init__.py
+│   └── settings
+│       ├── base.py
+│       ├── config.py
+│       ├── __init__.py
+|
+├── docker-compose.yml
+├── Dockerfile
+├── LICENSE
+├── pyproject.toml
+├── README.md
+└── requirements.txt
 
 ---
 
@@ -71,4 +112,3 @@ docker run -p 8000:8000 filecraft
 Built with ❤️ and performance in mind by Shivam Pandey.
 Optimized for speed, low memory usage, and a seamless developer experience.
 
-### 📄 License
