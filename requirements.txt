@@ -34,5 +34,8 @@ ruff==0.12.1                  # Check lint https://pypi.org/project/ruff/
 black==25.1.0                 # Code formatter https://pypi.org/project/black/
 isort==6.0.1                  # Sort import https://pypi.org/project/isort/
 
-# -- testing packages --
+# -- testing packages ---
 pytest==8.4.1                 # Testing framework https://docs.pytest.org/en/stable/
+
+# --- image processing ---    
+pillow==11.2.1                # Image https://pillow.readthedocs.io/en/stable/

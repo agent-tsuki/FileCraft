@@ -133,6 +133,8 @@ ignore = [
     "I001",
 # Import from `collections.abc` instead: `AsyncGenerator`
     "UP035",
+# Variable `imageRouter` in global scope should not be mixedCase
+    "N816",
 
 ]
 # The fixes in extend-unsafe-fixes will require

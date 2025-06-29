@@ -85,5 +85,4 @@ volumes:
 
 networks:
   file_craft:
-    driver: bridge  
-
+    driver: bridge
