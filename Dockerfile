@@ -35,7 +35,7 @@ COPY . .
 # COPY .env .  # Better handled in docker-compose
 
 # Expose FastAPI port
-EXPOSE 8080
+EXPOSE 8000
 
 # Default command: use uvicorn with reload for development
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080", "--reload"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     # Project configuration
     PROJECT_NAME: str
     DEBUG: bool
+    DOCS: str
 
     # Database configuration
     DB_PORT: int
