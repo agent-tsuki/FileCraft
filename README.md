@@ -1,5 +1,5 @@
 <pre lang="markdown">
-```markdown
+
 # 🧠 FileCraft – Smart File & Image Processor (FastAPI)
 
 **FileCraft** is a modern, memory-efficient API built with **FastAPI** that helps you:
