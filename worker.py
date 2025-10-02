@@ -13,10 +13,12 @@ from app.celery_app import celery_app
 
 if __name__ == "__main__":
     # Run celery worker
-    celery_app.worker_main([
-        "worker",
-        "--loglevel=info",
-        "--concurrency=4",
-        "--pool=threads",
-        "--queues=default,image_processing,audio_processing,optimization,batch_processing"
-    ])
+    celery_app.worker_main(
+        [
+            "worker",
+            "--loglevel=info",
+            "--concurrency=4",
+            "--pool=threads",
+            "--queues=default,image_processing,audio_processing,optimization,batch_processing",
+        ]
+    )

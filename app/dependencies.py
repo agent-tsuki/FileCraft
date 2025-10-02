@@ -1,6 +1,7 @@
 """
 Global dependencies for the FastAPI application.
 """
+
 import time
 from functools import lru_cache
 
@@ -11,10 +12,10 @@ from app.core.config import AppConfig, get_config
 
 class AppState:
     """Application state manager."""
-    
+
     def __init__(self):
         self.start_time = time.time()
-    
+
     def get_uptime(self) -> float:
         """Get application uptime in seconds."""
         return time.time() - self.start_time

@@ -2,6 +2,7 @@
 Legacy converter class - kept for backward compatibility.
 This functionality is now handled by the service layer.
 """
+
 import base64
 import zlib
 from typing import AsyncGenerator
@@ -12,16 +13,12 @@ from fastapi import UploadFile
 class Base64FileStreamer:
     """
     Legacy Base64 file streamer.
-    
+
     Note: This class is deprecated. Use app.services.base64.Base64Service instead.
     """
-    
+
     def __init__(
-        self,
-        file: UploadFile,
-        max_size: int,
-        compress: bool,
-        chunk_size: int = 8192
+        self, file: UploadFile, max_size: int, compress: bool, chunk_size: int = 8192
     ):
         self.file = file
         self.max_size = max_size

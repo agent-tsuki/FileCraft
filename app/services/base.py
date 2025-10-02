@@ -1,6 +1,7 @@
 """
 Base service class with common functionality.
 """
+
 import logging
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional
@@ -14,11 +15,11 @@ logger = logging.getLogger(__name__)
 
 class BaseService(ABC):
     """Base service class with dependency injection."""
-    
+
     def __init__(self, config: AppConfig):
         self.config = config
         self.logger = logging.getLogger(self.__class__.__name__)
-    
+
     def log_operation(self, operation: str, details: Optional[Dict[str, Any]] = None):
         """Log service operations."""
         if details:

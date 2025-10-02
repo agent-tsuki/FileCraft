@@ -1,6 +1,7 @@
 """
 Service factory for dependency injection.
 """
+
 from functools import lru_cache
 from typing import Dict, Type
 
@@ -16,11 +17,11 @@ from app.services.image import ImageService
 
 class ServiceFactory:
     """Factory for creating and managing services."""
-    
+
     def __init__(self, config: AppConfig):
         self.config = config
         self._services: Dict[Type[BaseService], BaseService] = {}
-    
+
     def get_service(self, service_class: Type[BaseService]) -> BaseService:
         """Get or create a service instance."""
         if service_class not in self._services:
@@ -28,16 +29,22 @@ class ServiceFactory:
                 self._services[service_class] = FileValidationService(self.config)
             elif service_class == Base64Service:
                 validation_service = self.get_service(FileValidationService)
-                self._services[service_class] = Base64Service(self.config, validation_service)
+                self._services[service_class] = Base64Service(
+                    self.config, validation_service
+                )
             elif service_class == ImageService:
                 validation_service = self.get_service(FileValidationService)
-                self._services[service_class] = ImageService(self.config, validation_service)
+                self._services[service_class] = ImageService(
+                    self.config, validation_service
+                )
             elif service_class == CompressionService:
                 validation_service = self.get_service(FileValidationService)
-                self._services[service_class] = CompressionService(self.config, validation_service)
+                self._services[service_class] = CompressionService(
+                    self.config, validation_service
+                )
             else:
                 raise ValueError(f"Unknown service class: {service_class}")
-        
+
         return self._services[service_class]
 
 

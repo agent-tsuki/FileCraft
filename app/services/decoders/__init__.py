@@ -1,6 +1,7 @@
 """
 Decoder services package.
 """
+
 from .base_decoder import BaseDecoderService
 from .base64_decoder import Base64DecoderService
 from .jwt_decoder import JWTDecoderService
@@ -10,7 +11,7 @@ from .hex_decoder import HexDecoderService
 __all__ = [
     "BaseDecoderService",
     "Base64DecoderService",
-    "JWTDecoderService", 
+    "JWTDecoderService",
     "URLDecoderService",
-    "HexDecoderService"
+    "HexDecoderService",
 ]

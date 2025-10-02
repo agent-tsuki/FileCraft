@@ -1,6 +1,7 @@
 """
 Encoder services package.
 """
+
 from .base_encoder import BaseEncoderService
 from .base64_encoder import Base64EncoderService
 from .jwt_encoder import JWTEncoderService
@@ -10,9 +11,9 @@ from .hash_encoder import HashEncoderService
 
 __all__ = [
     "BaseEncoderService",
-    "Base64EncoderService", 
+    "Base64EncoderService",
     "JWTEncoderService",
     "URLEncoderService",
     "HexEncoderService",
-    "HashEncoderService"
+    "HashEncoderService",
 ]
