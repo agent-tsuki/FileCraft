@@ -119,14 +119,14 @@ def create_application() -> FastAPI:
 
         return response
 
-    # Include routers
-    app.include_router(images.image_router)
-    app.include_router(audio.audio_router)
-    app.include_router(video.video_router)
-    app.include_router(compression.compression_router)
+    # Include routers with API prefix
+    app.include_router(images.image_router, prefix=config.api_v1_prefix)
+    app.include_router(audio.audio_router, prefix=config.api_v1_prefix)
+    app.include_router(video.video_router, prefix=config.api_v1_prefix)
+    app.include_router(compression.compression_router, prefix=config.api_v1_prefix)
 
-    # Include new encoder/decoder system
-    app.include_router(encoder_decoder_router)
+    # Include new encoder/decoder system with API prefix
+    app.include_router(encoder_decoder_router, prefix=config.api_v1_prefix)
 
     # API Information endpoint
     @app.get(
