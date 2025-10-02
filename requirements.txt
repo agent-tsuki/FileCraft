@@ -29,6 +29,9 @@ watchdog==4.0.0               # For dev-time hot-reload in Celery workers
 # --- Calling external APIs ---
 httpx==0.27.0                 # Async HTTP client
 
+# --- Encoding/Decoding ---
+PyJWT==2.8.0                  # JSON Web Token implementation
+
 # -- Code linter/formatter---
 ruff==0.12.1                  # Check lint https://pypi.org/project/ruff/
 black==25.1.0                 # Code formatter https://pypi.org/project/black/

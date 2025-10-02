@@ -13,6 +13,7 @@ from app.dependencies import get_uptime
 from app.middleware import setup_exception_handlers
 from app.middleware.logging import LoggingMiddleware
 from app.router.converters import base64, compression, images, audio, video
+from app.router.encoder_decoder import encoder_decoder_router
 from app.schemas.responses import SystemCheckResponse
 
 # Setup logging
@@ -61,6 +62,9 @@ def create_application() -> FastAPI:
     app.include_router(audio.audio_router)
     app.include_router(video.video_router)
     app.include_router(compression.compression_router)
+    
+    # Include new encoder/decoder system
+    app.include_router(encoder_decoder_router)
     
     # Health check endpoint
     @app.get(
