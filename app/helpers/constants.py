@@ -172,6 +172,90 @@ AUDIO_EFFECTS = {
     "treble_boost": "Enhance treble frequencies"
 }
 
+# Video formats chronologically from oldest to newest
+VIDEO_FORMATS = {
+    # 1980s-1990s (Oldest formats)
+    "avi": {"name": "Audio Video Interleave", "year": 1992, "container": True, "streaming": False, "hdr": False, "max_resolution": "Unlimited"},
+    "mov": {"name": "QuickTime Movie", "year": 1991, "container": True, "streaming": False, "hdr": False, "max_resolution": "Unlimited"},
+    "mpg": {"name": "MPEG-1 Video", "year": 1993, "container": False, "streaming": False, "hdr": False, "max_resolution": "704x576"},
+    "mpeg": {"name": "MPEG Video", "year": 1993, "container": False, "streaming": False, "hdr": False, "max_resolution": "704x576"},
+    "wmv": {"name": "Windows Media Video", "year": 1999, "container": True, "streaming": True, "hdr": False, "max_resolution": "1920x1080"},
+    
+    # 2000s Digital Era
+    "mp4": {"name": "MPEG-4 Part 14", "year": 2001, "container": True, "streaming": True, "hdr": True, "max_resolution": "Unlimited"},
+    "3gp": {"name": "3GPP Multimedia", "year": 2001, "container": True, "streaming": True, "hdr": False, "max_resolution": "352x288"},
+    "flv": {"name": "Flash Video", "year": 2003, "container": True, "streaming": True, "hdr": False, "max_resolution": "1920x1080"},
+    "m4v": {"name": "iTunes Video", "year": 2005, "container": True, "streaming": False, "hdr": True, "max_resolution": "Unlimited"},
+    
+    # 2010s Modern Formats
+    "webm": {"name": "WebM", "year": 2010, "container": True, "streaming": True, "hdr": True, "max_resolution": "Unlimited"},
+    "mkv": {"name": "Matroska Video", "year": 2002, "container": True, "streaming": False, "hdr": True, "max_resolution": "Unlimited"},
+    "ogv": {"name": "Ogg Video", "year": 2007, "container": True, "streaming": True, "hdr": False, "max_resolution": "Unlimited"},
+    "ts": {"name": "MPEG Transport Stream", "year": 1995, "container": True, "streaming": True, "hdr": True, "max_resolution": "Unlimited"},
+    "mts": {"name": "AVCHD Video", "year": 2006, "container": True, "streaming": False, "hdr": True, "max_resolution": "1920x1080"},
+    "m2ts": {"name": "Blu-ray BDAV", "year": 2006, "container": True, "streaming": False, "hdr": True, "max_resolution": "3840x2160"},
+    
+    # Professional/Broadcast
+    "mxf": {"name": "Material Exchange Format", "year": 2004, "container": True, "streaming": False, "hdr": True, "max_resolution": "Unlimited"},
+    "prores": {"name": "Apple ProRes", "year": 2007, "container": False, "streaming": False, "hdr": True, "max_resolution": "8192x4320"},
+    "dnxhd": {"name": "Avid DNxHD", "year": 2004, "container": False, "streaming": False, "hdr": True, "max_resolution": "1920x1080"},
+    
+    # Legacy formats
+    "asf": {"name": "Advanced Systems Format", "year": 1996, "container": True, "streaming": True, "hdr": False, "max_resolution": "1920x1080"},
+    "rm": {"name": "RealMedia", "year": 1995, "container": True, "streaming": True, "hdr": False, "max_resolution": "720x480"},
+    "vob": {"name": "Video Object", "year": 1997, "container": True, "streaming": False, "hdr": False, "max_resolution": "720x480"},
+    "dv": {"name": "Digital Video", "year": 1995, "container": False, "streaming": False, "hdr": False, "max_resolution": "720x480"},
+}
+
+# Supported output video formats
+SUPPORTED_VIDEO_OUTPUT_FORMATS = [
+    "mp4", "mkv", "webm", "avi", "mov", "wmv", "flv", "ogv", "m4v", "3gp"
+]
+
+# Video codecs
+VIDEO_CODECS = {
+    "h264": {"name": "H.264/AVC", "year": 2003, "hardware_acc": True, "max_bitrate": "62.5 Mbps"},
+    "h265": {"name": "H.265/HEVC", "year": 2013, "hardware_acc": True, "max_bitrate": "40 Mbps"},
+    "vp8": {"name": "VP8", "year": 2008, "hardware_acc": True, "max_bitrate": "Unlimited"},
+    "vp9": {"name": "VP9", "year": 2013, "hardware_acc": True, "max_bitrate": "Unlimited"},
+    "av1": {"name": "AV1", "year": 2018, "hardware_acc": True, "max_bitrate": "Unlimited"},
+    "xvid": {"name": "Xvid", "year": 2001, "hardware_acc": False, "max_bitrate": "Unlimited"},
+    "divx": {"name": "DivX", "year": 1999, "hardware_acc": False, "max_bitrate": "Unlimited"},
+}
+
+# Video quality presets
+VIDEO_QUALITY_PRESETS = {
+    "mobile": {"width": 480, "height": 360, "bitrate": "500k", "description": "Mobile optimized"},
+    "sd": {"width": 720, "height": 480, "bitrate": "1500k", "description": "Standard Definition"},
+    "hd": {"width": 1280, "height": 720, "bitrate": "3000k", "description": "HD 720p"},
+    "full_hd": {"width": 1920, "height": 1080, "bitrate": "5000k", "description": "Full HD 1080p"},
+    "2k": {"width": 2048, "height": 1080, "bitrate": "8000k", "description": "2K Cinema"},
+    "4k": {"width": 3840, "height": 2160, "bitrate": "15000k", "description": "4K Ultra HD"},
+    "8k": {"width": 7680, "height": 4320, "bitrate": "50000k", "description": "8K Ultra HD"},
+}
+
+# Video frame rates
+VIDEO_FRAME_RATES = [12, 15, 23.976, 24, 25, 29.97, 30, 50, 59.94, 60, 120]
+
+# Video effects and filters
+VIDEO_EFFECTS = {
+    "scale": "Resize video dimensions",
+    "crop": "Crop video area",
+    "rotate": "Rotate video",
+    "flip": "Flip video horizontally/vertically",
+    "stabilize": "Video stabilization",
+    "noise_reduction": "Reduce video noise",
+    "sharpen": "Sharpen video",
+    "blur": "Blur effect",
+    "brightness": "Adjust brightness",
+    "contrast": "Adjust contrast",
+    "saturation": "Adjust color saturation",
+    "fade_in": "Fade in at start",
+    "fade_out": "Fade out at end",
+    "speed_change": "Change playback speed",
+    "reverse": "Reverse video playback",
+}
+
 # File extension to type mapping
 EXTENSION_TYPE_MAP = {
     # All image formats
@@ -184,14 +268,17 @@ EXTENSION_TYPE_MAP = {
     # All audio formats
     **{ext: "audio" for ext in AUDIO_FORMATS.keys()},
     
+    # All video formats
+    **{ext: "video" for ext in VIDEO_FORMATS.keys()},
+    
+    # Additional video extensions
+    "webm": "video", "f4v": "video", "m2v": "video", "3g2": "video",
+    
     # PDFs
     "pdf": "pdf",
 
     # Documents
     "doc": "docs", "docx": "docs", "txt": "docs", "md": "docs", "rtf": "docs",
-
-    # Video (for future expansion)
-    "mp4": "video", "mkv": "video", "mov": "video", "avi": "video", "wmv": "video",
 }
 
 # Celery task priorities

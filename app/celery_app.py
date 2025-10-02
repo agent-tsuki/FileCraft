@@ -16,6 +16,7 @@ celery_app = Celery(
     include=[
         "app.tasks.image_tasks",
         "app.tasks.audio_tasks",
+        "app.tasks.video_tasks",
         "app.tasks.optimization_tasks"
     ]
 )
@@ -26,6 +27,7 @@ celery_app.conf.update(
     task_routes={
         "app.tasks.image_tasks.*": {"queue": "image_processing"},
         "app.tasks.audio_tasks.*": {"queue": "audio_processing"},
+        "app.tasks.video_tasks.*": {"queue": "video_processing"},
         "app.tasks.optimization_tasks.*": {"queue": "optimization"},
     },
     
@@ -90,6 +92,10 @@ celery_app.conf.task_routes = {
     "app.tasks.audio_tasks.batch_convert_audio": {"queue": "batch_processing"},
     "app.tasks.audio_tasks.extract_audio_features_async": {"queue": "audio_processing"},
     "app.tasks.audio_tasks.apply_audio_effects_async": {"queue": "audio_processing"},
+    "app.tasks.video_tasks.convert_video_task": {"queue": "video_processing"},
+    "app.tasks.video_tasks.batch_convert_videos_task": {"queue": "batch_processing"},
+    "app.tasks.video_tasks.extract_audio_task": {"queue": "video_processing"},
+    "app.tasks.video_tasks.generate_thumbnail_task": {"queue": "video_processing"},
     "app.tasks.optimization_tasks.*": {"queue": "optimization"},
 }
 

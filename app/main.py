@@ -12,7 +12,7 @@ from app.core.logging import setup_logging
 from app.dependencies import get_uptime
 from app.middleware import setup_exception_handlers
 from app.middleware.logging import LoggingMiddleware
-from app.router.converters import base64, compression, images, audio
+from app.router.converters import base64, compression, images, audio, video
 from app.schemas.responses import SystemCheckResponse
 
 # Setup logging
@@ -59,6 +59,7 @@ def create_application() -> FastAPI:
     app.include_router(base64.base64_router)
     app.include_router(images.image_router)
     app.include_router(audio.audio_router)
+    app.include_router(video.video_router)
     app.include_router(compression.compression_router)
     
     # Health check endpoint
