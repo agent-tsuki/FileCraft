@@ -9,6 +9,7 @@ from fastapi import Depends
 from app.core.config import AppConfig, get_config
 from app.exceptions import FileValidationError, FileSizeError
 from app.services.base import BaseService
+from app.helpers.constants import EXTENSION_TYPE_MAP
 
 
 class FileValidationService(BaseService):
@@ -16,20 +17,8 @@ class FileValidationService(BaseService):
     
     def __init__(self, config: AppConfig):
         super().__init__(config)
-        self.extension_type_map = {
-            # Images
-            "jpg": "img", "jpeg": "img", "png": "img", "gif": "img", "bmp": "img",
-            "tiff": "img", "tif": "img", "webp": "img", "heic": "img", "heif": "img",
-            "svg": "img", "ico": "img", "raw": "img", "psd": "img", "ai": "img",
-            "eps": "img", "jfif": "img", "apng": "img", "avif": "img",
-            # PDFs
-            "pdf": "pdf",
-            # Docs
-            "doc": "docs", "docx": "docs", "txt": "docs", "md": "docs", "rtf": "docs",
-            # Audio/Video
-            "mp3": "advance", "wav": "advance", "aac": "advance",
-            "mp4": "advance", "mkv": "advance", "mov": "advance",
-        }
+        # Use the centralized extension mapping from constants
+        self.extension_type_map = EXTENSION_TYPE_MAP
     
     def validate_file_size(self, file_size: int, file_type: str) -> bool:
         """

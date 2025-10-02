@@ -18,8 +18,10 @@ class AppConfig:
         self.allowed_origins = ["*"]  # Configure this based on environment
         self.max_upload_sizes = {
             "img": 50485760,      # 50MB (increased for high-res images)
+            "audio": 209715200,   # 200MB for audio files
             "docs": 5242880,      # 5MB
             "pdf": 15728640,      # 15MB
+            "video": 524288000,   # 500MB for video files
             "advance": 104857600  # 100MB
         }
         self.chunk_size = 8192

@@ -3,10 +3,12 @@ CHUNK_SIZE = 8192
 
 # Maximum file sizes (in bytes)
 MAX_UPLOAD_SIZE = {
-    "img": 50485760,  # 50MB for images (increased for high-resolution images)
-    "docs": 5242880,
-    "pdf": 15728640,
-    "advance": 104857600
+    "img": 50485760,     # 50MB for images (increased for high-resolution images)
+    "audio": 209715200,  # 200MB for audio files (high-quality audio)
+    "docs": 5242880,     # 5MB for documents
+    "pdf": 15728640,     # 15MB for PDFs
+    "video": 524288000,  # 500MB for video files
+    "advance": 1073741824  # 1GB for advanced processing
 }
 
 # Image formats chronologically from oldest to newest
@@ -96,6 +98,80 @@ COMPRESSION_ALGORITHMS = {
     "avif": ["lossless", "lossy"]
 }
 
+# Audio formats chronologically from oldest to newest
+AUDIO_FORMATS = {
+    # 1980s-1990s (Oldest formats)
+    "wav": {"name": "Waveform Audio File", "year": 1991, "lossy": False, "max_bitrate": "Uncompressed", "supports_metadata": True},
+    "au": {"name": "Audio File Format", "year": 1992, "lossy": False, "max_bitrate": "Uncompressed", "supports_metadata": False},
+    "aiff": {"name": "Audio Interchange File Format", "year": 1988, "lossy": False, "max_bitrate": "Uncompressed", "supports_metadata": True},
+    
+    # 1990s Compression Era
+    "mp2": {"name": "MPEG Audio Layer II", "year": 1993, "lossy": True, "max_bitrate": "384 kbps", "supports_metadata": False},
+    "mp3": {"name": "MPEG Audio Layer III", "year": 1993, "lossy": True, "max_bitrate": "320 kbps", "supports_metadata": True},
+    "ra": {"name": "RealAudio", "year": 1995, "lossy": True, "max_bitrate": "128 kbps", "supports_metadata": False},
+    
+    # 2000s Advanced Compression
+    "aac": {"name": "Advanced Audio Coding", "year": 2000, "lossy": True, "max_bitrate": "529 kbps", "supports_metadata": True},
+    "ogg": {"name": "Ogg Vorbis", "year": 2000, "lossy": True, "max_bitrate": "500 kbps", "supports_metadata": True},
+    "wma": {"name": "Windows Media Audio", "year": 1999, "lossy": True, "max_bitrate": "768 kbps", "supports_metadata": True},
+    "ac3": {"name": "Dolby Digital", "year": 1991, "lossy": True, "max_bitrate": "640 kbps", "supports_metadata": False},
+    
+    # 2000s Lossless Formats
+    "flac": {"name": "Free Lossless Audio Codec", "year": 2001, "lossy": False, "max_bitrate": "Lossless", "supports_metadata": True},
+    "ape": {"name": "Monkey's Audio", "year": 2000, "lossy": False, "max_bitrate": "Lossless", "supports_metadata": True},
+    "wv": {"name": "WavPack", "year": 2002, "lossy": False, "max_bitrate": "Lossless", "supports_metadata": True},
+    "alac": {"name": "Apple Lossless", "year": 2004, "lossy": False, "max_bitrate": "Lossless", "supports_metadata": True},
+    
+    # 2010s Modern Formats
+    "opus": {"name": "Opus", "year": 2012, "lossy": True, "max_bitrate": "510 kbps", "supports_metadata": True},
+    "webm": {"name": "WebM Audio", "year": 2010, "lossy": True, "max_bitrate": "500 kbps", "supports_metadata": True},
+    "m4a": {"name": "MPEG-4 Audio", "year": 2001, "lossy": True, "max_bitrate": "529 kbps", "supports_metadata": True},
+    
+    # Professional/Specialized
+    "dsd": {"name": "Direct Stream Digital", "year": 1999, "lossy": False, "max_bitrate": "Lossless", "supports_metadata": True},
+    "mqa": {"name": "Master Quality Authenticated", "year": 2014, "lossy": False, "max_bitrate": "Lossless", "supports_metadata": True},
+    
+    # Legacy/Rare formats
+    "snd": {"name": "Sound File", "year": 1983, "lossy": False, "max_bitrate": "Uncompressed", "supports_metadata": False},
+    "voc": {"name": "Creative Voice File", "year": 1989, "lossy": False, "max_bitrate": "Uncompressed", "supports_metadata": False},
+    "amr": {"name": "Adaptive Multi-Rate", "year": 1999, "lossy": True, "max_bitrate": "23.85 kbps", "supports_metadata": False},
+    "3gp": {"name": "3GPP Audio", "year": 2001, "lossy": True, "max_bitrate": "128 kbps", "supports_metadata": True},
+}
+
+# Supported output audio formats
+SUPPORTED_AUDIO_OUTPUT_FORMATS = [
+    "wav", "mp3", "aac", "ogg", "flac", "m4a", "opus", "webm", "aiff", "au"
+]
+
+# Audio quality presets
+AUDIO_QUALITY_PRESETS = {
+    "phone": {"bitrate": 64, "sample_rate": 22050, "description": "Phone quality"},
+    "radio": {"bitrate": 128, "sample_rate": 44100, "description": "Radio quality"},
+    "cd": {"bitrate": 320, "sample_rate": 44100, "description": "CD quality"},
+    "hd": {"bitrate": 500, "sample_rate": 48000, "description": "HD quality"},
+    "studio": {"bitrate": 1411, "sample_rate": 96000, "description": "Studio quality"},
+}
+
+# Sample rate options
+SAMPLE_RATES = [8000, 11025, 16000, 22050, 32000, 44100, 48000, 88200, 96000, 192000]
+
+# Audio effects and processing options
+AUDIO_EFFECTS = {
+    "normalize": "Normalize audio levels",
+    "compress": "Dynamic range compression", 
+    "eq": "Equalization",
+    "reverb": "Add reverb effect",
+    "echo": "Add echo effect",
+    "fade_in": "Fade in at start",
+    "fade_out": "Fade out at end",
+    "noise_reduction": "Reduce background noise",
+    "pitch_shift": "Change pitch without tempo",
+    "tempo_change": "Change tempo without pitch",
+    "stereo_width": "Adjust stereo width",
+    "bass_boost": "Enhance bass frequencies",
+    "treble_boost": "Enhance treble frequencies"
+}
+
 # File extension to type mapping
 EXTENSION_TYPE_MAP = {
     # All image formats
@@ -105,15 +181,17 @@ EXTENSION_TYPE_MAP = {
     "jfif": "img", "jpe": "img", "jfi": "img",
     "apng": "img", "mng": "img",
     
+    # All audio formats
+    **{ext: "audio" for ext in AUDIO_FORMATS.keys()},
+    
     # PDFs
     "pdf": "pdf",
 
     # Documents
     "doc": "docs", "docx": "docs", "txt": "docs", "md": "docs", "rtf": "docs",
 
-    # Audio/Video
-    "mp3": "advance", "wav": "advance", "aac": "advance",
-    "mp4": "advance", "mkv": "advance", "mov": "advance",
+    # Video (for future expansion)
+    "mp4": "video", "mkv": "video", "mov": "video", "avi": "video", "wmv": "video",
 }
 
 # Celery task priorities

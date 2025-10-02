@@ -18,5 +18,5 @@ if __name__ == "__main__":
         "--loglevel=info",
         "--concurrency=4",
         "--pool=threads",
-        "--queues=default,image_processing,optimization,batch_processing"
+        "--queues=default,image_processing,audio_processing,optimization,batch_processing"
     ])

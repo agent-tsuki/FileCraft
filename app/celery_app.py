@@ -15,6 +15,7 @@ celery_app = Celery(
     backend=redis_url,
     include=[
         "app.tasks.image_tasks",
+        "app.tasks.audio_tasks",
         "app.tasks.optimization_tasks"
     ]
 )
@@ -24,6 +25,7 @@ celery_app.conf.update(
     # Task routing
     task_routes={
         "app.tasks.image_tasks.*": {"queue": "image_processing"},
+        "app.tasks.audio_tasks.*": {"queue": "audio_processing"},
         "app.tasks.optimization_tasks.*": {"queue": "optimization"},
     },
     
@@ -84,6 +86,10 @@ celery_app.conf.task_routes = {
     "app.tasks.image_tasks.resize_image_async": {"queue": "image_processing"},
     "app.tasks.image_tasks.optimize_image_async": {"queue": "optimization"},
     "app.tasks.image_tasks.batch_convert_images": {"queue": "batch_processing"},
+    "app.tasks.audio_tasks.convert_audio_async": {"queue": "audio_processing"},
+    "app.tasks.audio_tasks.batch_convert_audio": {"queue": "batch_processing"},
+    "app.tasks.audio_tasks.extract_audio_features_async": {"queue": "audio_processing"},
+    "app.tasks.audio_tasks.apply_audio_effects_async": {"queue": "audio_processing"},
     "app.tasks.optimization_tasks.*": {"queue": "optimization"},
 }
 

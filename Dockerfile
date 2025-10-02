@@ -26,6 +26,19 @@ RUN apt-get update && apt-get install -y \
     # OpenCV dependencies
     libopencv-dev \
     python3-opencv \
+    # Audio processing dependencies (FFmpeg and related libraries)
+    ffmpeg \
+    libavcodec-dev \
+    libavformat-dev \
+    libavutil-dev \
+    libswscale-dev \
+    libswresample-dev \
+    libsndfile1-dev \
+    libasound2-dev \
+    libportaudio2 \
+    libportaudiocpp0 \
+    portaudio19-dev \
+    libfftw3-dev \
     # Additional libraries
     pkg-config \
     libfreetype6-dev \
