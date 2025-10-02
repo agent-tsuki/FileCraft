@@ -1,91 +1,83 @@
-from fastapi import UploadFile, Query, APIRouter, status
-from fastapi.responses import StreamingResponse, JSONResponse
-from PIL import Image, UnidentifiedImageError
-import zlib
-import io
+"""
+File compression router using service layer.
+"""
 import os
 
-router = APIRouter()
-CHUNK_SIZE = 8192
-IMAGE_EXTENSIONS = {"jpg", "jpeg", "png", "webp", "tiff", "bmp", "gif"}
+from fastapi import APIRouter, Depends, Query, UploadFile
+from fastapi.responses import StreamingResponse
 
-@router.post("/smart-compress")
+from app.schemas.responses import FileProcessingResponse
+from app.services.compression import CompressionService, get_compression_service
+
+compression_router = APIRouter(prefix="/compression", tags=["File Compressor"])
+
+
+@compression_router.post(
+    "/smart-compress",
+    response_model=FileProcessingResponse,
+    summary="Smart file compression",
+    description="Intelligently compress files and images with format-specific optimizations"
+)
 async def smart_compress_file(
     file: UploadFile,
-    compression_level: int = Query(default=6, ge=1, le=9),
-    quality: int = Query(default=70, ge=10, le=95, description="Image quality (JPEG/WebP)"),
-    force_webp: bool = Query(default=False, description="Convert all images to WebP"),
-):
-    if not file.filename:
-        return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            content={"status": False, "message": "Missing file"}
-        )
-
-    filename, ext = os.path.splitext(file.filename)
+    compression_level: int = Query(
+        default=6, ge=1, le=9,
+        description="Compression level for binary files (1-9)"
+    ),
+    quality: int = Query(
+        default=70, ge=10, le=95,
+        description="Image quality for lossy formats (10-95)"
+    ),
+    force_webp: bool = Query(
+        default=False,
+        description="Convert all images to WebP format"
+    ),
+    compression_service: CompressionService = Depends(get_compression_service)
+) -> StreamingResponse:
+    """
+    Smart compression for files and images.
+    
+    - **file**: File to compress
+    - **compression_level**: Compression level for binary files (1-9)
+    - **quality**: Image quality for lossy formats (10-95)
+    - **force_webp**: Convert all images to WebP format
+    
+    Returns compressed file as streaming response.
+    """
+    # Compress file
+    compressed_file = await compression_service.smart_compress_file(
+        file, compression_level, quality, force_webp
+    )
+    
+    # Generate output filename
+    original_filename = file.filename or "file"
+    filename_base, ext = os.path.splitext(original_filename)
     ext = ext.lower().strip(".")
-
-    content = await file.read()
-
-    if ext in IMAGE_EXTENSIONS:
-        try:
-            input_buffer = io.BytesIO(content)
-            image = Image.open(input_buffer)
-
-            # ✅ Strip all metadata
-            data = list(image.getdata())
-            image_no_meta = Image.new(image.mode, image.size)
-            image_no_meta.putdata(data)
-
-            # ✅ Convert to RGB if needed (JPEG can't handle RGBA)
-            if image_no_meta.mode in ("RGBA", "P"):
-                image_no_meta = image_no_meta.convert("RGB")
-
-            output = io.BytesIO()
-
-            # ✅ Choose output format
-            target_format = "WEBP" if force_webp else image.format or "JPEG"
-            target_ext = "webp" if force_webp else (ext if ext != "jpg" else "jpeg")
-
-            save_kwargs = {
-                "optimize": True,
-                "quality": quality
-            }
-
-            if target_format.upper() == "PNG":
-                save_kwargs["compress_level"] = 9
-
-            image_no_meta.save(output, format=target_format, **save_kwargs)
-            output.seek(0)
-
-            return StreamingResponse(
-                output,
-                media_type=f"image/{target_ext}",
-                headers={
-                    "Content-Disposition": f"inline; filename={filename}_compressed.{target_ext}"
-                }
-            )
-
-        except UnidentifiedImageError:
-            return JSONResponse(
-                status_code=400,
-                content={"status": False, "message": "Invalid image format"}
-            )
-
+    
+    # Determine output extension and media type
+    image_extensions = {"jpg", "jpeg", "png", "webp", "tiff", "bmp", "gif"}
+    
+    if ext in image_extensions:
+        if force_webp:
+            output_filename = f"{filename_base}_compressed.webp"
+            media_type = "image/webp"
+        else:
+            target_ext = "jpeg" if ext == "jpg" else ext
+            output_filename = f"{filename_base}_compressed.{target_ext}"
+            media_type = f"image/{target_ext}"
     else:
-        # Binary file compression fallback
-        buffer = io.BytesIO(content)
+        # Binary file
+        output_filename = f"{filename_base}_compressed.wxct"
+        media_type = "application/octet-stream"
+    
+    return StreamingResponse(
+        compressed_file,
+        media_type=media_type,
+        headers={
+            "Content-Disposition": f"attachment; filename={output_filename}"
+        }
+    )
 
-        def stream_zlib():
-            compressor = zlib.compressobj(compression_level)
-            while chunk := buffer.read(CHUNK_SIZE):
-                yield compressor.compress(chunk)
-            yield compressor.flush()
 
-        return StreamingResponse(
-            stream_zlib(),
-            media_type="application/octet-stream",
-            headers={
-                "Content-Disposition": f"attachment; filename={filename}.wxct"
-            }
-        )
+# Keep backward compatibility
+router = compression_router

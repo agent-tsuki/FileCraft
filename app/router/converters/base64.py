@@ -1,59 +1,49 @@
-from fastapi import APIRouter, UploadFile, status, Query
-from fastapi.responses import JSONResponse, StreamingResponse
+"""
+Base64 conversion router using service layer.
+"""
+from fastapi import APIRouter, Depends, Query, UploadFile
+from fastapi.responses import StreamingResponse
 
-from base64 import b64encode
-import zlib
-import io
+from app.schemas.responses import FileProcessingResponse
+from app.services.base64 import Base64Service, get_base64_service
 
-from app.helpers.file_validator import validate_file_size, get_file_type
-from app.helpers.constants import MAX_UPLOAD_SIZE
-
-base64Router = APIRouter(prefix="/base63")
+base64_router = APIRouter(prefix="/base64", tags=["Base64 Converter"])
 
 
-@base64Router.post("/file")
-async def convert_img_to_base64(
+@base64_router.post(
+    "/file",
+    response_model=FileProcessingResponse,
+    summary="Convert file to Base64",
+    description="Convert any uploaded file to Base64 encoding with optional compression"
+)
+async def convert_file_to_base64(
     file: UploadFile,
-    compress: bool = Query(default=False)
-):
-    if not file.filename:
-        return JSONResponse(
-            status_code=status.HTTP_404_NOT_FOUND,
-            content={
-                "status": False,
-                "message": "File is empty or without filename"
-            }
-        )
-
-    content = await file.read()
-    _, exe = get_file_type(file.filename)
-
-    if not validate_file_size(len(content), exe):  # use len(content), not file.size
-        return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            content={
-                "status": False,
-                "message": f"file size should be under {MAX_UPLOAD_SIZE.get(exe, 0)}"
-            }
-        )
-
-    # compress content
-    if compress:
-        content = zlib.compress(content)
-
-    buffer = io.BytesIO(content)
-
-    async def stream_base64():
-        while True:
-            chunk = buffer.read(8192)
-            if not chunk:
-                break
-            yield b64encode(chunk)
-
+    compress: bool = Query(default=False, description="Compress file before encoding"),
+    base64_service: Base64Service = Depends(get_base64_service)
+) -> StreamingResponse:
+    """
+    Convert uploaded file to Base64 format.
+    
+    - **file**: File to be converted
+    - **compress**: Whether to compress the file before encoding (optional)
+    
+    Returns a streaming response with Base64 encoded content.
+    """
+    # Generate base64 stream
+    base64_stream = base64_service.convert_to_base64_stream(file, compress)
+    
+    # Generate filename
+    original_filename = file.filename or "unknown"
+    output_filename = f"{original_filename}.b64"
+    
     return StreamingResponse(
-        stream_base64(),
+        base64_stream,
         media_type="text/plain",
         headers={
-            "Content-Disposition": f"inline; filename={file.filename}.b64"
+            "Content-Disposition": f"inline; filename={output_filename}"
         }
     )
+
+
+# Keep backward compatibility
+base64Router = base64_router

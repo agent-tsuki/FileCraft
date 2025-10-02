@@ -1,6 +1,4 @@
-<pre lang="markdown">
-
-# 🧠 FileCraft – Smart File & Image Processor (FastAPI)
+# 🧠 FileCraft – Professional File & Image Processing API
 
 **FileCraft** is a modern, memory-efficient API built with **FastAPI** that helps you:
 
