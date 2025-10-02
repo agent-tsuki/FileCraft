@@ -17,12 +17,20 @@ class AppConfig:
         self.docs_url = settings.DOCS
         self.allowed_origins = ["*"]  # Configure this based on environment
         self.max_upload_sizes = {
-            "img": 10485760,      # 10MB
+            "img": 50485760,      # 50MB (increased for high-res images)
             "docs": 5242880,      # 5MB
             "pdf": 15728640,      # 15MB
             "advance": 104857600  # 100MB
         }
         self.chunk_size = 8192
+        
+        # Redis configuration for Celery
+        self.redis_url = getattr(settings, 'REDIS_URL', "redis://localhost:6379/0")
+        
+        # Image processing configuration
+        self.max_image_pixels = 178956970  # 178MP limit for PIL
+        self.image_memory_limit = 256 * 1024 * 1024  # 256MB
+        self.enable_async_processing = getattr(settings, 'ENABLE_ASYNC_PROCESSING', True)
     
     def get_cors_config(self) -> Dict[str, Any]:
         """Get CORS configuration."""

@@ -7,12 +7,30 @@ WORKDIR /app
 # Prevent interactive prompts during package install
 ENV DEBIAN_FRONTEND=noninteractive
 
-# System dependencies for building some Python packages
+# System dependencies for building Python packages and image processing
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
     curl \
     gcc \
+    # Image processing dependencies
+    libjpeg-dev \
+    libpng-dev \
+    libtiff-dev \
+    libwebp-dev \
+    libopenjp2-7-dev \
+    libheif-dev \
+    libavif-dev \
+    # ImageMagick dependencies
+    libmagickwand-dev \
+    # OpenCV dependencies
+    libopencv-dev \
+    python3-opencv \
+    # Additional libraries
+    pkg-config \
+    libfreetype6-dev \
+    liblcms2-dev \
+    libxcb1-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install pipenv or poetry if needed, otherwise stick to pip

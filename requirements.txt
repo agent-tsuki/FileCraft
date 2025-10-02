@@ -39,3 +39,12 @@ pytest==8.4.1                 # Testing framework https://docs.pytest.org/en/sta
 
 # --- image processing ---    
 pillow==11.2.1                # Image https://pillow.readthedocs.io/en/stable/
+pillow-heif==0.20.0           # HEIC/HEIF support for Pillow
+pillow-avif-plugin==1.4.3     # AVIF support for Pillow
+wand==0.6.13                  # ImageMagick binding for advanced processing
+opencv-python==4.10.0.84     # Computer vision library for advanced image processing
+numpy==1.26.4                 # Numerical computing (required by OpenCV)
+imageio==2.36.0               # Image I/O library
+scikit-image==0.24.0          # Advanced image processing algorithms
+rawpy==0.21.0                 # RAW image processing
+pyheif==0.7.1                 # HEIF format support

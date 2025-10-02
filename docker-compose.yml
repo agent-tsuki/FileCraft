@@ -13,7 +13,7 @@ services:
       - .env
     depends_on:
       - db
-      # - redis  # Uncomment When you need celery 
+      - redis  # Redis for Celery
     restart: always
     networks:
       - file_craft
@@ -33,35 +33,79 @@ services:
     networks:
       - file_craft
 
-  ## NOTE: Uncomment if you need task
+  # Redis for Celery
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    networks:
+      - file_craft
 
-  # redis:
-    # image: redis:7
-    # container_name: redis
-    # restart: always
-    # ports:
-    #   - "6379:6379"
+  # Celery worker for image processing
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: celery_worker
+    command: python worker.py
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    restart: always
+    networks:
+      - file_craft
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
 
-  # celery_worker:
-  #   build:
-  #     context: .
-  #   container_name: celery_worker
-  #   command: celery -A worker.celery_app worker --loglevel=info
-  #   volumes:
-  #     - .:/app
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - fastapi
-  #     - redis
-  #     - db
-  #   restart: always
+  # Flower for monitoring Celery
+  flower:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flower
+    command: celery -A app.celery_app flower --port=5555
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    ports:
+      - "5555:5555"
+    restart: always
+    networks:
+      - file_craft
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
 
-  # celery_beat:
-  #   build:
-  #     context: .
-  #   container_name: celery_beat
-  #   command: celery -A worker.celery_app beat --loglevel=info
+  # Celery beat scheduler for periodic tasks
+  celery_beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: celery_beat
+    command: celery -A app.celery_app beat --loglevel=info
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    restart: always
+    networks:
+      - file_craft
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
   #   volumes:
   #     - .:/app
   #   env_file:

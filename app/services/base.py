@@ -21,4 +21,9 @@ class BaseService(ABC):
     
     def log_operation(self, operation: str, details: Optional[Dict[str, Any]] = None):
         """Log service operations."""
-        self.logger.info(f"Operation: {operation}", extra=details or {})
+        if details:
+            # Convert details to a safe format for logging
+            safe_details = {f"operation_{k}": v for k, v in details.items()}
+            self.logger.info(f"Operation: {operation} - Details: {details}")
+        else:
+            self.logger.info(f"Operation: {operation}")
