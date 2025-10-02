@@ -20,7 +20,7 @@ from .decoders import (
 )
 
 # Create main router
-encoder_decoder_router = APIRouter(prefix="/codec", tags=["Encoder/Decoder"])
+encoder_decoder_router = APIRouter()
 
 # Include all encoder routers
 encoder_decoder_router.include_router(base64_encoder_router)
@@ -37,7 +37,7 @@ encoder_decoder_router.include_router(hex_decoder_router)
 
 
 @encoder_decoder_router.get(
-    "/",
+    "/encoder-decoder-overview",
     summary="Encoder/Decoder Overview",
     description="Get overview of all available encoding and decoding capabilities",
 )

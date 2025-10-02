@@ -6,7 +6,7 @@ import logging
 from contextlib import asynccontextmanager
 from typing import Dict, Any
 
-from fastapi import Depends, FastAPI, Response
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
@@ -18,7 +18,7 @@ from app.core.security import get_default_security_headers
 from app.dependencies import get_uptime
 from app.middleware import setup_exception_handlers
 from app.middleware.request_logging import LoggingMiddleware
-from app.router.converters import base64, compression, images, audio, video
+from app.router.converters import compression, images, audio, video
 from app.router.encoder_decoder import encoder_decoder_router
 from app.schemas.responses import SystemCheckResponse
 
@@ -120,7 +120,6 @@ def create_application() -> FastAPI:
         return response
 
     # Include routers
-    app.include_router(base64.base64_router)
     app.include_router(images.image_router)
     app.include_router(audio.audio_router)
     app.include_router(video.video_router)
