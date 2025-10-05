@@ -1,37 +1,37 @@
 # =============================================================================
-# 🚂 MINIMAL RAILWAY ENVIRONMENT VARIABLES (NO EXTERNAL SERVICES)
+# 🚂 MINIMAL RAILWAY SETUP - NO EXTERNAL SERVICES NEEDED
 # =============================================================================
-# Copy these to your Railway dashboard → Project → Variables
-# Only uses Railway's built-in PostgreSQL and Redis services
+# Copy these variables to your Railway project environment settings
+# This setup only uses Railway's built-in services (PostgreSQL + Redis)
 
 # =============================================================================
-# 🔐 SECURITY KEYS (REQUIRED!)
+# 🔐 SECURITY KEYS (REQUIRED - CHANGE THESE!)
 # =============================================================================
 SECRET_KEY=9sq!5KQ@j!p8I@flZp7Zn98csSzHHxz6
 JWT_SECRET_KEY=$@YL&yZn5GsLEw0Dh0itAVUWsczw9n@Y
 
 # =============================================================================
-# 🌐 BASIC SETTINGS
+# 🌐 BASIC APPLICATION SETTINGS
 # =============================================================================
 ENVIRONMENT=production
 DEBUG=false
 LOG_LEVEL=info
 
 # =============================================================================
-# 🔗 DOMAIN (UPDATE WITH YOUR ACTUAL RAILWAY DOMAIN)
+# 🔗 DOMAIN CONFIGURATION (UPDATE WITH YOUR RAILWAY DOMAIN)
 # =============================================================================
 CORS_ORIGINS=["https://filecraft-production.up.railway.app"]
 ALLOWED_HOSTS=["filecraft-production.up.railway.app"]
 
 # =============================================================================
-# 📄 DISABLE DOCS (SECURITY)
+# 📄 DISABLE API DOCS (SECURITY)
 # =============================================================================
 ENABLE_DOCS=false
 ENABLE_SWAGGER_UI=false
 ENABLE_REDOC=false
 
 # =============================================================================
-# 📁 FILE LIMITS (SMALL FOR BASIC PLAN)
+# 📁 FILE LIMITS (RAILWAY FRIENDLY)
 # =============================================================================
 MAX_UPLOAD_SIZE=52428800
 MAX_IMAGE_SIZE_MB=20
@@ -46,14 +46,20 @@ RATE_LIMIT_REQUESTS=100
 RATE_LIMIT_WINDOW=3600
 
 # =============================================================================
-# ⚙️ PROCESSING
+# ⚙️ PROCESSING SETTINGS
 # =============================================================================
 MAX_CONCURRENT_TASKS=4
 TASK_TIMEOUT=300
 IMAGE_QUALITY_DEFAULT=80
 
 # =============================================================================
-# � DISABLED SERVICES
+# 🔧 REDIS SETTINGS
+# =============================================================================
+REDIS_DB=0
+REDIS_SSL=true
+
+# =============================================================================
+# 🚫 DISABLED EXTERNAL SERVICES
 # =============================================================================
 ENABLE_S3_STORAGE=false
 ENABLE_EMAIL_NOTIFICATIONS=false
@@ -61,29 +67,17 @@ ENABLE_WEBHOOKS=false
 ENABLE_PROFILING=false
 
 # =============================================================================
-# 🚨 IMPORTANT NOTES FOR RAILWAY SETUP:
+# ✅ RAILWAY SERVICES TO ADD:
 # =============================================================================
 # 
-# 1. ADD POSTGRESQL SERVICE:
-#    - Railway will automatically provide: DATABASE_URL, PGHOST, PGPORT, etc.
+# 1. ADD POSTGRESQL:
+#    - In Railway dashboard, click "New Service" → "Database" → "PostgreSQL"
+#    - Railway will automatically provide DATABASE_URL
 # 
-# 2. ADD REDIS SERVICE:
-#    - Railway will automatically provide: REDIS_URL, REDIS_HOST, REDIS_PORT, etc.
+# 2. ADD REDIS:  
+#    - In Railway dashboard, click "New Service" → "Database" → "Redis"
+#    - Railway will automatically provide REDIS_URL
 # 
-# 3. CELERY CONFIGURATION:
-#    - Railway will automatically set CELERY_BROKER_URL and CELERY_RESULT_BACKEND 
-#      to use the REDIS_URL when you add Redis service
-# 
-# 4. DO NOT SET THESE IN RAILWAY (Auto-provided):
-#    - PORT (Railway sets this automatically)
-#    - DATABASE_URL (Set by PostgreSQL service)
-#    - REDIS_URL (Set by Redis service)
-#    - PGHOST, PGPORT, PGDATABASE, PGUSER, PGPASSWORD (Set by PostgreSQL service)
-#    - REDIS_HOST, REDIS_PORT, REDIS_PASSWORD (Set by Redis service)
-# 
-# 5. GENERATE SECURE KEYS:
-#    - Use a password generator for SECRET_KEY and JWT_SECRET_KEY
-#    - Keys should be at least 32 characters long
-#    - Use different keys for each environment
+# 3. THAT'S IT! No other services needed.
 # 
 # =============================================================================
