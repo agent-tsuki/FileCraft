@@ -1,0 +1,97 @@
+# =============================================================================
+# 🚂 RAILWAY ENVIRONMENT VARIABLES - SET THESE IN RAILWAY DASHBOARD
+# =============================================================================
+# Copy these variables one by one to your Railway project environment settings
+# DO NOT copy the entire .env.production file to Railway!
+
+# =============================================================================
+# 🔐 CRITICAL SECURITY VARIABLES (GENERATE STRONG KEYS!)
+# =============================================================================
+SECRET_KEY=your-super-secret-production-key-change-this-to-random-32-chars
+JWT_SECRET_KEY=your-jwt-secret-production-key-change-this-to-random-32-chars
+
+# =============================================================================
+# 🌐 APPLICATION CONFIGURATION
+# =============================================================================
+ENVIRONMENT=production
+DEBUG=false
+LOG_LEVEL=info
+
+# =============================================================================
+# 🔗 CORS AND DOMAIN CONFIGURATION
+# =============================================================================
+CORS_ORIGINS=["https://filecraft-production.up.railway.app"]
+ALLOWED_HOSTS=["filecraft-production.up.railway.app","*.railway.app"]
+
+# =============================================================================
+# 📄 API DOCUMENTATION (DISABLE FOR SECURITY)
+# =============================================================================
+ENABLE_DOCS=false
+ENABLE_SWAGGER_UI=false
+ENABLE_REDOC=false
+ENABLE_OPENAPI=false
+
+# =============================================================================
+# 📁 FILE UPLOAD LIMITS (RAILWAY OPTIMIZED)
+# =============================================================================
+MAX_UPLOAD_SIZE=104857600
+MAX_IMAGE_SIZE_MB=25
+MAX_AUDIO_SIZE_MB=100
+MAX_VIDEO_SIZE_MB=250
+
+# =============================================================================
+# 🎯 RATE LIMITING
+# =============================================================================
+RATE_LIMIT_ENABLED=true
+RATE_LIMIT_REQUESTS=200
+RATE_LIMIT_WINDOW=3600
+RATE_LIMIT_PER_IP=2000
+
+# =============================================================================
+# ⚙️ PROCESSING CONFIGURATION
+# =============================================================================
+MAX_CONCURRENT_TASKS=8
+TASK_TIMEOUT=300
+IMAGE_QUALITY_DEFAULT=80
+VIDEO_BITRATE_DEFAULT=800k
+VIDEO_FPS_DEFAULT=24
+
+# =============================================================================
+# 🔧 REDIS CONFIGURATION (FOR RAILWAY REDIS SERVICE)
+# =============================================================================
+REDIS_DB=0
+REDIS_SSL=true
+
+# =============================================================================
+# 📊 MONITORING
+# =============================================================================
+ENABLE_METRICS=true
+ENABLE_HEALTH_CHECK=true
+
+# =============================================================================
+# 🚨 IMPORTANT NOTES FOR RAILWAY SETUP:
+# =============================================================================
+# 
+# 1. ADD POSTGRESQL SERVICE:
+#    - Railway will automatically provide: DATABASE_URL, PGHOST, PGPORT, etc.
+# 
+# 2. ADD REDIS SERVICE:
+#    - Railway will automatically provide: REDIS_URL, REDIS_HOST, REDIS_PORT, etc.
+# 
+# 3. CELERY CONFIGURATION:
+#    - Railway will automatically set CELERY_BROKER_URL and CELERY_RESULT_BACKEND 
+#      to use the REDIS_URL when you add Redis service
+# 
+# 4. DO NOT SET THESE IN RAILWAY (Auto-provided):
+#    - PORT (Railway sets this automatically)
+#    - DATABASE_URL (Set by PostgreSQL service)
+#    - REDIS_URL (Set by Redis service)
+#    - PGHOST, PGPORT, PGDATABASE, PGUSER, PGPASSWORD (Set by PostgreSQL service)
+#    - REDIS_HOST, REDIS_PORT, REDIS_PASSWORD (Set by Redis service)
+# 
+# 5. GENERATE SECURE KEYS:
+#    - Use a password generator for SECRET_KEY and JWT_SECRET_KEY
+#    - Keys should be at least 32 characters long
+#    - Use different keys for each environment
+# 
+# =============================================================================
