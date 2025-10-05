@@ -1,0 +1,85 @@
+# FileCraft Railway Environment Variables Template
+# Copy these variables to your Railway project environment settings
+
+# =============================================================================
+# 🔐 CRITICAL SECURITY VARIABLES (MUST SET IN RAILWAY)
+# =============================================================================
+SECRET_KEY=generate-a-strong-secret-key-min-32-chars
+JWT_SECRET_KEY=generate-a-strong-jwt-secret-key-min-32-chars
+
+# =============================================================================
+# 🌐 APPLICATION CONFIGURATION
+# =============================================================================
+ENVIRONMENT=production
+DEBUG=false
+LOG_LEVEL=info
+
+# Replace with your actual Railway app URL and custom domains
+CORS_ORIGINS=["https://filecraft-production.up.railway.app"]
+ALLOWED_HOSTS=["filecraft-production.up.railway.app"]
+
+# =============================================================================
+# 📄 API DOCUMENTATION (Disable in production for security)
+# =============================================================================
+ENABLE_DOCS=false
+ENABLE_SWAGGER_UI=false
+ENABLE_REDOC=false
+
+# =============================================================================
+# 📁 FILE UPLOAD LIMITS (Optimized for Railway)
+# =============================================================================
+MAX_UPLOAD_SIZE=104857600
+MAX_IMAGE_SIZE_MB=25
+MAX_AUDIO_SIZE_MB=100
+MAX_VIDEO_SIZE_MB=250
+
+# =============================================================================
+# 🎯 RATE LIMITING
+# =============================================================================
+RATE_LIMIT_ENABLED=true
+RATE_LIMIT_REQUESTS=200
+RATE_LIMIT_WINDOW=3600
+RATE_LIMIT_PER_IP=2000
+
+# =============================================================================
+# ☁️  AWS S3 STORAGE (Optional but recommended for production)
+# =============================================================================
+AWS_ACCESS_KEY_ID=your-aws-access-key
+AWS_SECRET_ACCESS_KEY=your-aws-secret-key
+AWS_REGION=us-east-1
+S3_BUCKET_NAME=your-s3-bucket-name
+ENABLE_S3_STORAGE=false
+
+# =============================================================================
+# 📧 EMAIL CONFIGURATION (Optional)
+# =============================================================================
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASSWORD=your-app-password
+SMTP_TLS=true
+EMAIL_FROM=noreply@your-domain.com
+ENABLE_EMAIL_NOTIFICATIONS=false
+
+# =============================================================================
+# 🐛 ERROR TRACKING (Recommended for production)
+# =============================================================================
+SENTRY_DSN=your-sentry-dsn-url
+
+# =============================================================================
+# 📊 PROCESSING CONFIGURATION (Railway Optimized)
+# =============================================================================
+MAX_CONCURRENT_TASKS=8
+TASK_TIMEOUT=300
+IMAGE_QUALITY_DEFAULT=80
+VIDEO_BITRATE_DEFAULT=800k
+VIDEO_FPS_DEFAULT=24
+
+# =============================================================================
+# 🚨 RAILWAY AUTO-PROVIDED VARIABLES (DO NOT SET MANUALLY)
+# =============================================================================
+# These are automatically provided by Railway services:
+# PORT - Web service port
+# DATABASE_URL - PostgreSQL connection
+# REDIS_URL - Redis connection
+# PGHOST, PGPORT, PGDATABASE, PGUSER, PGPASSWORD - PostgreSQL details
