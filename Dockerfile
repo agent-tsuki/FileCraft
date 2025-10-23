@@ -1,7 +1,6 @@
 # Multi-stage Dockerfile for FileCraft
 # Runs both FastAPI and Celery in a single container
-
-FROM python:3.12-slim AS base
+FROM ubuntu:22.04
 
 # Set working directory
 WORKDIR /app
@@ -9,8 +8,11 @@ WORKDIR /app
 # Prevent interactive prompts during package install
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install system dependencies
+# Install system dependencies including Python
 RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    python3-dev \
     build-essential \
     libpq-dev \
     curl \
@@ -39,12 +41,15 @@ RUN apt-get update && apt-get install -y \
     supervisor \
     && rm -rf /var/lib/apt/lists/*
 
+# Create symbolic link for python command
+RUN ln -s /usr/bin/python3 /usr/bin/python
+
 # Upgrade pip
-RUN pip install --upgrade pip
+RUN python3 -m pip install --upgrade pip
 
 # Copy requirements and install Python dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN python3 -m pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY . .
