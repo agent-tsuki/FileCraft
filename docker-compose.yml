@@ -1,132 +1,67 @@
+version: '3.8'
+
 services:
-  fastapi:
+  # Main application (FastAPI + Celery in one container)
+  app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: file_craft
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-    volumes:
-      - .:/app
+    container_name: filecraft_app
     ports:
-      - "8080:8000"
-    env_file:
-      - .env
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - DATABASE_URL=postgresql://postgres:password@db:5432/filecraft
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - ENVIRONMENT=development
+      - DEBUG=true
+      - DB_HOSTNAME=db
+      - REDIS_HOST=redis
+    volumes:
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
     depends_on:
       - db
-      - redis  # Redis for Celery
-    restart: always
+      - redis
+    restart: unless-stopped
     networks:
-      - file_craft
+      - filecraft
 
+  # PostgreSQL Database
   db:
     image: postgres:15
-    container_name: postgres
-    restart: always
+    container_name: filecraft_db
     environment:
-      POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: filecraft
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    restart: unless-stopped
     networks:
-      - file_craft
+      - filecraft
 
   # Redis for Celery
   redis:
     image: redis:7-alpine
-    container_name: redis
-    restart: always
+    container_name: filecraft_redis
     ports:
       - "6379:6379"
     command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
-    networks:
-      - file_craft
-
-  # Celery worker for image processing
-  celery_worker:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: celery_worker
-    command: python worker.py
     volumes:
-      - .:/app
-    env_file:
-      - .env
-    depends_on:
-      - db
-      - redis
-    restart: always
+      - redis_data:/data
+    restart: unless-stopped
     networks:
-      - file_craft
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
-
-  # Flower for monitoring Celery
-  flower:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: flower
-    command: celery -A app.celery_app flower --port=5555
-    volumes:
-      - .:/app
-    env_file:
-      - .env
-    depends_on:
-      - redis
-    ports:
-      - "5555:5555"
-    restart: always
-    networks:
-      - file_craft
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
-
-  # Celery beat scheduler for periodic tasks
-  celery_beat:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: celery_beat
-    command: celery -A app.celery_app beat --loglevel=info
-    volumes:
-      - .:/app
-    env_file:
-      - .env
-    depends_on:
-      - redis
-    restart: always
-    networks:
-      - file_craft
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
-  #   volumes:
-  #     - .:/app
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - celery_worker
-  #   restart: always
-
-  # flower:
-  #   image: mher/flower
-  #   container_name: flower
-  #   command: flower --broker=redis://redis:6379/0
-  #   ports:
-  #     - "5555:5555"
-  #   depends_on:
-  #     - redis
-  #   restart: always
+      - filecraft
 
 volumes:
-  pg_data:
+  postgres_data:
+  redis_data:
 
 networks:
-  file_craft:
+  filecraft:
     driver: bridge

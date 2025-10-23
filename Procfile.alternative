@@ -1,3 +1,0 @@
-# Alternative Procfile using startup script
-web: ./railway-start.sh
-worker: celery -A app.celery_app worker --loglevel=info --concurrency=2

@@ -85,7 +85,7 @@ class Settings(BaseSettings):
     RATE_LIMIT_PER_IP: int = 1000  # requests per IP per window
 
     # ===== File Upload Configuration =====
-    MAX_UPLOAD_SIZE: int = 500 * 1024 * 1024  # 500MB
+    MAX_UPLOAD_SIZE: int = 100 * 1024 * 1024  # 100MB for local
     ALLOWED_FILE_EXTENSIONS: List[str] = [
         # Images
         ".jpg",
@@ -129,25 +129,25 @@ class Settings(BaseSettings):
         ".bz2",
     ]
 
-    # ===== Database Configuration =====
+    # ===== DATABASE CONFIGURATION (Docker/Render ready) =====
     DB_PORT: int = 5432
-    DB_HOSTNAME: str = "localhost"
+    DB_HOSTNAME: str = "db"  # Docker service name, fallback to localhost
     DB_DATABASE: str = "filecraft"
     DB_USER: str = "postgres"
     DB_PASSWORD: str = "password"
     DATABASE_URL: Optional[str] = None
 
-    # ===== Redis Configuration =====
-    REDIS_URL: str = "redis://localhost:6379/0"
-    REDIS_HOST: str = "localhost"
+    # ===== REDIS CONFIGURATION (Docker/Render ready) =====
+    REDIS_URL: str = "redis://redis:6379/0"  # Docker service name
+    REDIS_HOST: str = "redis"
     REDIS_PORT: int = 6379
     REDIS_DB: int = 0
     REDIS_PASSWORD: Optional[str] = None
     REDIS_SSL: bool = False
 
-    # ===== Celery Configuration =====
-    CELERY_BROKER_URL: str = "redis://localhost:6379/0"
-    CELERY_RESULT_BACKEND: str = "redis://localhost:6379/0"
+    # ===== CELERY CONFIGURATION =====
+    CELERY_BROKER_URL: str = "redis://redis:6379/0"
+    CELERY_RESULT_BACKEND: str = "redis://redis:6379/0"
     CELERY_TASK_SERIALIZER: str = "json"
     CELERY_RESULT_SERIALIZER: str = "json"
     CELERY_ACCEPT_CONTENT: List[str] = ["json"]
@@ -157,24 +157,24 @@ class Settings(BaseSettings):
     CELERY_TASK_TIME_LIMIT: int = 30 * 60  # 30 minutes
     CELERY_TASK_SOFT_TIME_LIMIT: int = 25 * 60  # 25 minutes
 
-    # ===== Processing Configuration =====
-    ENABLE_ASYNC_PROCESSING: bool = True
-    MAX_CONCURRENT_TASKS: int = 10
+    # ===== PROCESSING CONFIGURATION =====
+    ENABLE_ASYNC_PROCESSING: bool = True  # Enabled for Docker/Render
+    MAX_CONCURRENT_TASKS: int = 4
     TASK_TIMEOUT: int = 300  # 5 minutes
 
-    # Image processing
-    MAX_IMAGE_SIZE_MB: int = 50
+    # Image processing - reduced for local
+    MAX_IMAGE_SIZE_MB: int = 20
     IMAGE_QUALITY_DEFAULT: int = 85
     MAX_IMAGE_PIXELS: int = 178956970  # 178MP limit for PIL
     IMAGE_MEMORY_LIMIT: int = 256 * 1024 * 1024  # 256MB
 
-    # Audio processing
-    MAX_AUDIO_SIZE_MB: int = 200
+    # Audio processing - reduced for local
+    MAX_AUDIO_SIZE_MB: int = 50
     AUDIO_BITRATE_DEFAULT: int = 128
     AUDIO_SAMPLE_RATE_DEFAULT: int = 44100
 
-    # Video processing
-    MAX_VIDEO_SIZE_MB: int = 500
+    # Video processing - reduced for local
+    MAX_VIDEO_SIZE_MB: int = 100
     VIDEO_BITRATE_DEFAULT: str = "1M"
     VIDEO_FPS_DEFAULT: int = 30
     VIDEO_RESOLUTION_DEFAULT: str = "1280x720"
@@ -200,15 +200,15 @@ class Settings(BaseSettings):
     ENABLE_BATCH_PROCESSING: bool = True
     ENABLE_REAL_TIME_PROCESSING: bool = True
 
-    # ===== Third-party Services =====
-    # AWS S3 (for file storage)
+    # ===== DISABLED EXTERNAL SERVICES FOR LOCAL =====
+    # AWS S3 - Disabled for local development
     AWS_ACCESS_KEY_ID: Optional[str] = None
     AWS_SECRET_ACCESS_KEY: Optional[str] = None
     AWS_REGION: str = "us-east-1"
     S3_BUCKET_NAME: Optional[str] = None
     ENABLE_S3_STORAGE: bool = False
 
-    # Email configuration (for notifications)
+    # Email - Disabled for local development
     SMTP_HOST: Optional[str] = None
     SMTP_PORT: int = 587
     SMTP_USER: Optional[str] = None
@@ -217,7 +217,7 @@ class Settings(BaseSettings):
     EMAIL_FROM: Optional[str] = None
     ENABLE_EMAIL_NOTIFICATIONS: bool = False
 
-    # Webhook configuration
+    # Webhooks - Disabled for local development
     WEBHOOK_SECRET: Optional[str] = None
     WEBHOOK_TIMEOUT: int = 30
     MAX_WEBHOOK_RETRIES: int = 3

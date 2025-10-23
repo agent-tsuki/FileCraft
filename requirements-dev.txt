@@ -1,6 +1,0 @@
-# Development dependencies
-pytest==8.4.1
-pytest-asyncio==0.24.0
-httpx==0.27.0  # For async test client
-coverage==7.6.9
-pytest-cov==6.0.0

@@ -81,7 +81,7 @@ class AppConfig:
         }
         self.chunk_size = 8192
 
-        # ===== Database Configuration =====
+        # ===== DATABASE CONFIGURATION =====
         self.database_url = settings.DATABASE_URL
         self.db_host = settings.DB_HOSTNAME
         self.db_port = settings.DB_PORT
@@ -89,7 +89,7 @@ class AppConfig:
         self.db_user = settings.DB_USER
         self.db_password = settings.DB_PASSWORD
 
-        # ===== Redis Configuration =====
+        # ===== REDIS CONFIGURATION =====
         self.redis_url = settings.REDIS_URL
         self.redis_host = settings.REDIS_HOST
         self.redis_port = settings.REDIS_PORT
@@ -97,7 +97,7 @@ class AppConfig:
         self.redis_password = settings.REDIS_PASSWORD
         self.redis_ssl = settings.REDIS_SSL
 
-        # ===== Celery Configuration =====
+        # ===== CELERY CONFIGURATION =====
         self.celery_broker_url = settings.CELERY_BROKER_URL
         self.celery_result_backend = settings.CELERY_RESULT_BACKEND
         self.celery_task_serializer = settings.CELERY_TASK_SERIALIZER
@@ -146,24 +146,9 @@ class AppConfig:
         self.enable_batch_processing = settings.ENABLE_BATCH_PROCESSING
         self.enable_real_time_processing = settings.ENABLE_REAL_TIME_PROCESSING
 
-        # ===== Third-party Services =====
-        # AWS S3
-        self.aws_access_key_id = settings.AWS_ACCESS_KEY_ID
-        self.aws_secret_access_key = settings.AWS_SECRET_ACCESS_KEY
-        self.aws_region = settings.AWS_REGION
-        self.s3_bucket_name = settings.S3_BUCKET_NAME
-        self.enable_s3_storage = settings.ENABLE_S3_STORAGE
-
-        # Email configuration
-        self.smtp_host = settings.SMTP_HOST
-        self.smtp_port = settings.SMTP_PORT
-        self.smtp_user = settings.SMTP_USER
-        self.smtp_password = settings.SMTP_PASSWORD
-        self.smtp_tls = settings.SMTP_TLS
-        self.email_from = settings.EMAIL_FROM
-        self.enable_email_notifications = settings.ENABLE_EMAIL_NOTIFICATIONS
-
-        # Webhook configuration
+        # ===== Third-party Services - ALL DISABLED FOR LOCAL =====
+        self.enable_s3_storage = False
+        self.enable_email_notifications = False
         self.webhook_secret = settings.WEBHOOK_SECRET
         self.webhook_timeout = settings.WEBHOOK_TIMEOUT
         self.max_webhook_retries = settings.MAX_WEBHOOK_RETRIES

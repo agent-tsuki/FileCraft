@@ -1,4 +1,6 @@
-# ---------- Base stage (for dependency installation) ----------
+# Multi-stage Dockerfile for FileCraft
+# Runs both FastAPI and Celery in a single container
+
 FROM python:3.12-slim AS base
 
 # Set working directory
@@ -7,12 +9,13 @@ WORKDIR /app
 # Prevent interactive prompts during package install
 ENV DEBIAN_FRONTEND=noninteractive
 
-# System dependencies for building Python packages and image processing
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
     curl \
     gcc \
+    netcat-traditional \
     # Image processing dependencies
     libjpeg-dev \
     libpng-dev \
@@ -21,52 +24,47 @@ RUN apt-get update && apt-get install -y \
     libopenjp2-7-dev \
     libheif-dev \
     libavif-dev \
-    # ImageMagick dependencies
-    libmagickwand-dev \
-    # OpenCV dependencies
-    libopencv-dev \
-    python3-opencv \
-    # Audio processing dependencies (FFmpeg and related libraries)
+    # Audio/Video processing dependencies
     ffmpeg \
     libavcodec-dev \
     libavformat-dev \
     libavutil-dev \
     libswscale-dev \
     libswresample-dev \
-    libsndfile1-dev \
-    libasound2-dev \
-    libportaudio2 \
-    libportaudiocpp0 \
-    portaudio19-dev \
-    libfftw3-dev \
-    # Additional libraries
+    # Essential libraries
     pkg-config \
     libfreetype6-dev \
     liblcms2-dev \
-    libxcb1-dev \
+    # Supervisor for process management
+    supervisor \
     && rm -rf /var/lib/apt/lists/*
 
-# Install pipenv or poetry if needed, otherwise stick to pip
-# Install pip upgrade + pip-tools (optional)
+# Upgrade pip
 RUN pip install --upgrade pip
 
-# Copy only requirements first (for caching)
+# Copy requirements and install Python dependencies
 COPY requirements.txt .
-
-# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# ---------- Final stage ----------
-FROM base AS dev
-
-# Copy source code
+# Copy application code
 COPY . .
 
-# Copy .env file (optional, if you want to bake it in)
-# COPY .env .  # Better handled in docker-compose
+# Create necessary directories
+RUN mkdir -p uploads logs /var/log/supervisor
 
-# Expose FastAPI port
-EXPOSE 8000
+# Create supervisor configuration
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Default command: use uvicorn with reload for development
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+# Expose port (will be set by Render automatically)
+EXPOSE $PORT
+
+# Set environment variables for production
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:${PORT:-8000}/health || exit 1
+
+# Use supervisor to run both FastAPI and Celery
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
